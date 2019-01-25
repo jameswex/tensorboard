@@ -1,4 +1,4 @@
-# What-If Tool
+# The What-If Tool
 
 ![What-If Tool Screenshot](/tensorboard/plugins/interactive_inference/img/wit-smile-intro.png "What-If Tool Screenshot")
 
