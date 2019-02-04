@@ -50,7 +50,7 @@ limitations under the License.
 <dom-module id="tf-scalar-dashboard">
   <template>
     <tf-dashboard-layout>
-      <div class="sidebar">
+      <div slot="sidebar" class="sidebar">
         <div class="sidebar-section">
           <div class="line-item">
             <paper-checkbox
@@ -70,12 +70,12 @@ limitations under the License.
               no-label-float
               selected-item-label="{{_tooltipSortingMethod}}"
             >
-              <paper-menu class="dropdown-content" selected="0" slot="dropdown-content">
+              <paper-listbox class="dropdown-content" selected="0" slot="dropdown-content">
                 <paper-item>default</paper-item>
                 <paper-item>descending</paper-item>
                 <paper-item>ascending</paper-item>
                 <paper-item>nearest</paper-item>
-              </paper-menu>
+              </paper-listbox>
             </paper-dropdown-menu>
           </div>
         </div>
@@ -105,7 +105,7 @@ limitations under the License.
           </div>
         </template>
       </div>
-      <div class="center">
+      <div slot="center" class="center">
         <template is="dom-if" if="[[_dataNotFound]]">
           <div class="no-data-warning">
             <h3>No scalar data was found.</h3>
@@ -134,6 +134,7 @@ limitations under the License.
               category="[[category]]"
               opened="[[_getPaneOpened(category)]]"
               on-opened-changed="_onPaneOpenChanged"
+              restamp
             >
               <tf-paginated-view
                 items="[[category.items]]"
@@ -279,8 +280,18 @@ limitations under the License.
       ],
       observers: [
         '_updateCategories(_runToTagInfo, _selectedRuns, _tagFilter, _categoriesDomReady, dataSelection)',
-        '_updatePaneOpened(_categories.*)',
+        '_updatePaneOpened(_categories)',
       ],
+      listeners: {
+        'content-visibility-changed': '_redrawCategoryPane',
+      },
+
+      _redrawCategoryPane(event, val) {
+        if (!val) return;
+        event.target.querySelectorAll('tf-scalar-card')
+            .forEach(card => card.redraw());
+      },
+
       _showDownloadLinksObserver: tf_storage.getBooleanObserver(
           '_showDownloadLinks', {defaultValue: false, useLocalStorage: true}),
       _smoothingWeightObserver: tf_storage.getNumberObserver(
@@ -307,7 +318,7 @@ limitations under the License.
             .filter(name => paneOpen[name] != null)
             .forEach(name => newPaneOpened[name] = paneOpen[name]);
 
-        if (Object.keys(newPaneOpened).length == 0) {
+        if (Object.keys(newPaneOpened).length <= 1) {
           this._categories.slice(0, NUM_DEFAULT_OPENED_PANE)
               .map(this._getCategoryKey)
               .forEach(name => {
@@ -319,7 +330,7 @@ limitations under the License.
       },
 
       _getPaneOpened(category) {
-        return this._paneOpened[this._getCategoryKey(category)];
+        return Boolean(this._paneOpened[this._getCategoryKey(category)]);
       },
 
       _onPaneOpenChanged(event) {
