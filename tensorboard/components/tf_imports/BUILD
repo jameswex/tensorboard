@@ -123,7 +123,11 @@ tf_web_library(
     ],
     path = "/tf-imports",
     strip_prefix = "package",
-    visibility = ["//visibility:private"],
+    # TODO(stephanwlee): plottable.css from :plottable is not accessible.
+    # Should investigate and restore this back.
+    #visibility = [
+        # "//visibility:private",
+    #],
 )
 
 tf_web_library(
