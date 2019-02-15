@@ -21,26 +21,25 @@ limitations under the License.
   <template>
     <style>
       .table {
-        display: table;
+        height: 100%;
+        overflow-y: overlay;
         border-collapse: collapse;
       }
       .total-row {
-        border-bottom: 1px solid grey;
         display: table-row;
         font-weight: 500;
       }
       .header-row {
         display: table-row;
+        border-bottom: 1px solid lightgrey;
       }
       .row {
-        border-bottom: 1px solid grey;
         display: table-row;
       }
       .header {
         color: grey;
         display: table-cell;
-        background: #e3ecfc;
-        font-weight: 400;
+        font-weight: 500;
         padding: 4px 10px;
       }
       .cell {
@@ -53,7 +52,7 @@ limitations under the License.
     </style>
     <div class="table">
       <div class="header-row">
-        <div class="header">Name</div>
+        <div class="header">Feature Name</div>
         <div class="header">Count</div>
         <div class="header">Mean Error</div>
         <div class="header">Mean Absolute Error</div>

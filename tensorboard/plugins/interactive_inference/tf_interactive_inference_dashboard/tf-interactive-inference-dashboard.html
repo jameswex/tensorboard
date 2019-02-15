@@ -971,6 +971,11 @@ limitations under the License.
         min-width: 140px;
         width: 140px;
       }
+      tf-regression-table {
+        width: 100%;
+        height: 100%;
+        background: white;
+      }
     </style>
     <paper-dialog id="inferencesettings" class="inference-settings" opened="[[!local]]">
       <tf-inference-panel
@@ -2764,7 +2769,7 @@ limitations under the License.
               }
               regressionEntries.push(
                 this.fillInRegressionStats(inferenceStats.results,
-                  this.formatChartKey('Total', modelInd, this.numModels)));
+                  this.formatChartKey('All examples', modelInd, this.numModels)));
               for (let key in inferenceStats.faceted) {
                 regressionEntries.push(
                   this.fillInRegressionStats(inferenceStats.faceted[key],
