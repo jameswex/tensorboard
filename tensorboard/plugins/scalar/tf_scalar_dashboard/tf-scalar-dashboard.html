@@ -145,7 +145,7 @@ limitations under the License.
                     <div class="layout horizontal wrap">
                       <template is="dom-repeat" items="[[page.items]]">
                         <tf-scalar-card
-                          active="[[page.active]]"
+                          active="[[_getCardActive(_paneOpened.*, category, page)]]"
                           data-to-load="[[item.series]]"
                           ignore-y-outliers="[[_ignoreYOutliers]]"
                           multi-experiments="[[_getMultiExperiments(dataSelection)]]"
@@ -282,9 +282,6 @@ limitations under the License.
         '_updateCategories(_runToTagInfo, _selectedRuns, _tagFilter, _categoriesDomReady, dataSelection)',
         '_updatePaneOpened(_categories.*)',
       ],
-      listeners: {
-        'content-visibility-changed': '_redrawCategoryPane',
-      },
 
       _redrawCategoryPane(event, val) {
         if (!val) return;
@@ -333,11 +330,21 @@ limitations under the License.
         return Boolean(this._paneOpened[this._getCategoryKey(category)]);
       },
 
+      _getCardActive(paneOpened, category, page) {
+        return this._getPaneOpened(category) && page.active;
+      },
+
       _onPaneOpenChanged(event) {
         // The event can be triggered without the pane being mounted.
         if (!this.isAttached || !event.target.isAttached) return;
         const name = this._getCategoryKey(event.target.category);
-        this._paneOpened[name] = event.detail.value;
+        const isOpened = event.detail.value;
+        this.set(`_paneOpened.${name}`, isOpened);
+
+        if (isOpened) {
+          event.target.querySelectorAll('tf-scalar-card')
+              .forEach((card) => card.redraw());
+        }
       },
 
       ready() {
