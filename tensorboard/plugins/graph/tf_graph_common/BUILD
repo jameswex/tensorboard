@@ -27,6 +27,7 @@ tf_web_library(
         "template.ts",
         "tf-graph-common.html",
         "tf-graph-icon.html",
+        "tf-node-icon.html",
         "util.ts",
     ],
     path = "/tf-graph-common",
