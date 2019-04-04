@@ -161,7 +161,6 @@ Polymer({
      */
     renderHierarchy: {
       type: Object,
-      notify: true,
     },
     /**
      * @type {!Selection}
@@ -180,6 +179,11 @@ Polymer({
       type: Number,
       value: 0,
       observer: '_selectedRunIndexChanged',
+    },
+    traceInputs: {
+      type: Boolean,
+      notify: true,
+      value: false,
     },
     _selectedTagIndex: {
       type: Number,
@@ -235,16 +239,13 @@ Polymer({
     },
   },
 
-  listeners: {
-    'trace-inputs.change': '_traceInputToggleChanged',
-  },
-
-  _traceInputToggleChanged: function(event: Event): void {
-    // Flip the state of the trace inputs flag.
-    const toggleButton: any = event.target;
-    this.renderHierarchy.traceInputs = toggleButton.active;
-    tf.graph.scene.node.traceInputs(this.renderHierarchy);
-  },
+  // DO_NOT_SUBMIT
+  //  _traceInputToggleChanged: function(event: Event): void {
+  //    // Flip the state of the trace inputs flag.
+  //    const toggleButton: any = event.target;
+  //    this.renderHierarchy.traceInputs = toggleButton.active;
+  //    tf.graph.scene.node.traceInputs(this.renderHierarchy);
+  //  },
 
   _xlaClustersProvided: function(
       renderHierarchy: tf.graph.render.RenderGraphInfo | null) {
@@ -460,7 +461,7 @@ Polymer({
     this.colorBy = ColorBy.STRUCTURE;
     this._selectedTagIndex = 0;
     this._selectedGraphType = this._getDefaultSelectionType();
-    this.$['trace-inputs'].active = false; // Set trace input to off-state.
+    this.traceInputs = false; // Set trace input to off-state.
     this._setDownloadFilename(
         this.datasets[runIndex] ? this.datasets[runIndex].name : '');
   },
