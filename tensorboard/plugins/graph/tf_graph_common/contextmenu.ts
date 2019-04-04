@@ -59,11 +59,10 @@ function getOffset(sceneElement) {
  * selection.on function. Renders the context menu that is to be displayed
  * in response to the event.
  */
-export function getMenu(sceneElement, menu: ContextMenuItem[]) {
-  let menuSelection = d3.select('.context-menu');
-  // Close the menu when anything else is clicked.
-  d3.select('body').on(
-      'click.context', function() { menuSelection.style('display', 'none'); });
+export function getMenu(
+    sceneElement: tf.graph.scene.TfGraphScene, menu: ContextMenuItem[]) {
+
+  const menuSelection = d3.select(sceneElement.getContextMenu());
 
   // Function called to populate the context menu.
   return function(data, index: number): void {
@@ -78,6 +77,16 @@ export function getMenu(sceneElement, menu: ContextMenuItem[]) {
     // Stop the event from propagating further.
     event.preventDefault();
     event.stopPropagation();
+
+    function closeMenu() {
+      menuSelection.style('display', 'none');
+      document.body.removeEventListener(
+          'mousedown', closeMenu, {capture: true});
+    };
+    // Dismiss and remove the click listener as soon as there is a mousedown
+    // on the document. We use capture listener so no component can stop
+    // context menu from dismissing due to stopped propagation.
+    document.body.addEventListener('mousedown', closeMenu, {capture: true});
 
     // Add provided items to the context menu.
     menuSelection.html('');
