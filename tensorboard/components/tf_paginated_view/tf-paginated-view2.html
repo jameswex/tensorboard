@@ -54,7 +54,7 @@ limitations under the License.
         >Next page</paper-button>
       </div>
     </template>
-    <div id="template"><slot></slot></div>
+    <div><slot id="template"></slot></div>
     <div id="items"></div>
     <template is="dom-if" if="[[_multiplePagesExist]]">
       <div id="controls-container">
@@ -256,16 +256,21 @@ limitations under the License.
 
     behaviors: [
       tf_dashboard_common.ArrayUpdateHelper,
-      Polymer.Templatizer,
     ],
 
     ready() {
-      // Template instance props that should be excluded from forwarding
-     this._instanceProps = {
-       [this.as]: true,
-     };
-
-      this.templatize(this.$.template.querySelector('template'));
+      const templateNode = this.$.template.assignedElements()[0];
+      this.__ctor = Polymer.Templatize.templatize(templateNode, this, {
+          parentModel: true,
+          instanceProps: {
+            [this.as]: true,
+          },
+          forwardHostProp: (prop, value) => {
+            this._renderedTemplateInst.forEach(inst => {
+              inst.notifyPath(prop, value, true /* fromAbove */);
+            });
+          },
+      });
     },
 
     attached() {
@@ -352,7 +357,7 @@ limitations under the License.
         fragOrEl = this._lruCachedItems.get(key);
         this._lruCachedItems.delete(key);
       } else {
-        const inst = this.stamp({[this.as]: item});
+        const inst = new this.__ctor({[this.as]: item});
         fragOrEl = inst.root;
         this._renderedTemplateInst.set(key, inst);
       }
