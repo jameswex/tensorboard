@@ -239,6 +239,9 @@ Polymer({
    */
   getFeaturesList: function(features: any, compareFeatures: any) {
     const featuresList: NameAndFeature[] = [];
+    if (features == null) {
+      return featuresList;
+    }
     const featureSet: {[key: string]: boolean} = {};
     let it = features.keys();
     if (it) {
@@ -249,6 +252,9 @@ Polymer({
         featureSet[next.value] = true;
         next = it.next();
       }
+    }
+    if (compareFeatures == null) {
+      return featuresList;
     }
     it = compareFeatures.keys();
     if (it) {
@@ -292,6 +298,9 @@ Polymer({
 
   getFilteredFeaturesList: function(featureList: NameAndFeature[],
       searchValue: string, saliency: SaliencyMap) {
+    if (featureList == null) {
+      return;
+    }
     let filtered = featureList;
     const checkSal = saliency && Object.keys(saliency).length > 0;
     // Create a dict of feature names to the total absolute saliency of all
@@ -1419,7 +1428,7 @@ Polymer({
   },
 
   featureMoreClicked: function(event: Event) {
-    const button = event.srcElement.parentElement;
+    const button = event.srcElement;
     const feature = (button as any).dataFeature;
     const dialog = this.$$('#' + this.sanitizeFeature(feature) + '_dialog');
     dialog.positionTarget = button;

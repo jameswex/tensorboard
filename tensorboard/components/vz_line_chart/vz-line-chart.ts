@@ -830,6 +830,8 @@ class LineChart {
 
   private createTooltipInteraction(dzl: DragZoomLayer):
       Plottable.Interactions.Pointer {
+    // TODO(jameswex): Use vz-chart-helper interaction.
+    //const pi = new vz_chart_helpers.PointerInteraction();
     const pi = new Plottable.Interactions.Pointer();
     // Disable interaction while drag zooming.
     dzl.interactionStart(() => {
