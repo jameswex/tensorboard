@@ -21,6 +21,7 @@ limitations under the License.
 <link rel="import" href="../iron-icons/hardware-icons.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../neon-animation/web-animations.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
 <link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
@@ -73,6 +74,10 @@ limitations under the License.
       :host {
         --paper-tab-ink: var(--tb-orange-dark);
         --wit-color-gray300: #DADCE0;
+      }
+
+      [hidden] {
+        display: none !important;
       }
 
       #classification {
@@ -1224,7 +1229,7 @@ limitations under the License.
         <paper-radio-button class="dist-radio" name="L2">L2</paper-radio-button>
       </paper-radio-group>
       <paper-dropdown-menu label="Apply to datapoints visualization" class="threshold-dropdown distance-vis-dropdown">
-        <paper-listbox class="dropdown-content" selected="{{facetDistSetting}}" attr-for-selected="name">
+        <paper-listbox class="dropdown-content" selected="{{facetDistSetting}}" attr-for-selected="name" slot="dropdown-content">
           <paper-item name="colorBy">Color By</paper-item>
           <paper-item name="horizontalFacet">X-Axis Binning</paper-item>
           <paper-item name="verticalFacet">Y-Axis Binning</paper-item>
@@ -1549,7 +1554,7 @@ limitations under the License.
                         <template is="dom-if" if="[[shouldShowLabelDropdown_(stats)]]">
                           <div class="flex">
                             <paper-dropdown-menu label="Ground Truth Feature" class="threshold-dropdown">
-                              <paper-listbox class="dropdown-content" selected="{{selectedLabelFeature}}" attr-for-selected="name">
+                              <paper-listbox class="dropdown-content" selected="{{selectedLabelFeature}}" attr-for-selected="name" slot="dropdown-content">
                                 <template is="dom-repeat" items="[[getFeatureList_(stats)]]">
                                   <paper-item name="[[item]]">[[getFeatureName_(item)]]</paper-item>
                                 </template>
@@ -1599,7 +1604,7 @@ limitations under the License.
                           <template is="dom-if" if="[[shouldShowFeatureDropdown_(stats)]]">
                             <div class="flex">
                               <paper-dropdown-menu label="Slice by" class="threshold-dropdown">
-                                <paper-listbox class="dropdown-content" selected="{{selectedBreakdownFeature}}" attr-for-selected="name">
+                                <paper-listbox class="dropdown-content" selected="{{selectedBreakdownFeature}}" attr-for-selected="name" slot="dropdown-content">
                                   <template is="dom-repeat" items="[[getFeatureList_(stats)]]">
                                     <paper-item name="[[item]]">[[getFeatureName_(item)]]</paper-item>
                                   </template>
@@ -1615,7 +1620,7 @@ limitations under the License.
                             <div class="flex">
                               <template is="dom-if" if="[[shouldShowSecondFeatureDropdown_(selectedBreakdownFeature)]]">
                                 <paper-dropdown-menu label="Slice by (secondary)" class="threshold-dropdown">
-                                  <paper-listbox class="dropdown-content" selected="{{selectedSecondBreakdownFeature}}" attr-for-selected="name">
+                                  <paper-listbox class="dropdown-content" selected="{{selectedSecondBreakdownFeature}}" attr-for-selected="name" slot="dropdown-content">
                                     <template is="dom-repeat" items="[[getFeatureList_(stats)]]">
                                       <paper-item name="[[item]]">[[getFeatureName_(item)]]</paper-item>
                                     </template>
@@ -1744,7 +1749,7 @@ limitations under the License.
                           </paper-icon-button>
                         </div>
                         <paper-dropdown-menu label="Sort by" class="threshold-dropdown perf-table-sort-menu">
-                          <paper-listbox class="dropdown-content" selected="{{selectedFeatureSort}}" attr-for-selected="name">
+                          <paper-listbox class="dropdown-content" selected="{{selectedFeatureSort}}" attr-for-selected="name" slot="dropdown-content">
                             <template is="dom-repeat" items="[[getFeatureSortBy(modelType, multiClass)]]">
                               <paper-item name="[[item]]">[[item]]</paper-item>
                             </template>
@@ -1794,7 +1799,7 @@ limitations under the License.
                               <div class="perf-table-threshold">
                                 <template is="dom-repeat" items="{{featureValueThreshold.threshold}}">
                                     <paper-slider class$="[[getSliderClass(index)]]" editable=true min="0" max="1" step="0.01" immediate-value="{{item.threshold}}"
-                                      value="[[item.threshold]]" on-value-changed="refreshInferencesNoRegen_" on-down="resetOptimizationSelected_">
+                                      value="[[item.threshold]]" on-value-changed="refreshInferencesNoRegen_" on-immediate-value-changed="refreshInferencesNoRegen_" on-down="resetOptimizationSelected_">
                                     </paper-slider>
                                 </template>
                               </div>
@@ -1866,7 +1871,7 @@ limitations under the License.
                             <div class="perf-table-threshold">
                               <template is="dom-repeat" items="{{overallThresholds}}">
                                   <paper-slider class$="[[getSliderClass(index)]]" editable=true min="0" max="1" step="0.01" immediate-value="{{item.threshold}}"
-                                    value="[[item.threshold]]" on-value-changed="refreshInferencesNoRegen_" on-down="resetOptimizationSelected_">
+                                    value="[[item.threshold]]" on-value-changed="refreshInferencesNoRegen_" on-immediate-value-changed="refreshInferencesNoRegen_" on-down="resetOptimizationSelected_">
                                   </paper-slider>
                               </template>
                             </div>
@@ -1944,7 +1949,7 @@ limitations under the License.
                           </paper-icon-button>
                         </div>
                         <paper-dropdown-menu label="Sort by" class="threshold-dropdown perf-table-sort-menu">
-                          <paper-listbox class="dropdown-content" selected="{{selectedFeatureSort}}" attr-for-selected="name">
+                          <paper-listbox class="dropdown-content" selected="{{selectedFeatureSort}}" attr-for-selected="name" slot="dropdown-content">
                             <template is="dom-repeat" items="[[getFeatureSortBy(modelType, multiClass)]]">
                               <paper-item name="[[item]]">[[item]]</paper-item>
                             </template>
@@ -2056,7 +2061,7 @@ limitations under the License.
                         </paper-dialog>
                       </div>
                         <paper-dropdown-menu label="Sort by" class="threshold-dropdown perf-table-sort-menu">
-                        <paper-listbox class="dropdown-content" selected="{{selectedFeatureSort}}" attr-for-selected="name">
+                        <paper-listbox class="dropdown-content" selected="{{selectedFeatureSort}}" attr-for-selected="name" slot="dropdown-content">
                           <template is="dom-repeat" items="[[getFeatureSortBy(modelType, multiClass)]]">
                             <paper-item name="[[item]]">[[item]]</paper-item>
                           </template>
@@ -2795,19 +2800,19 @@ limitations under the License.
 
       setExampleCollapsed_: function() {
         this.exampleDisplayMode = 'grid';
-        this.$$('#viewer').expandedFeatures = {};
-        this.$$('#viewer').expandAllFeatures = false;
-        this.$$('#viewer').refreshExampleViewer();
+        this.shadowRoot.querySelector('#viewer').expandedFeatures = {};
+        this.shadowRoot.querySelector('#viewer').expandAllFeatures = false;
+        this.shadowRoot.querySelector('#viewer').refreshExampleViewer();
       },
 
       setExampleShow_: function() {
         this.exampleDisplayMode = 'grid';
-        this.$$('#viewer').expandAllFeatures = true;
+        this.shadowRoot.querySelector('#viewer').expandAllFeatures = true;
       },
 
       setExampleExpanded_: function() {
         this.exampleDisplayMode = 'stacked';
-        this.$$('#viewer').expandAllFeatures = true;
+        this.shadowRoot.querySelector('#viewer').expandAllFeatures = true;
       },
 
       statsChanged_: function(event) {
@@ -3215,7 +3220,7 @@ limitations under the License.
               plotThresholds.push(modelThresholds[modelInd].threshold)
             }
             this.plotPr(
-              this.$$('#' + this.getPrChartId(i)),
+              this.shadowRoot.querySelector('#' + this.getPrChartId(i)),
               plotStats,
               plotThresholds,
               regenInferenceStats);
@@ -3228,7 +3233,7 @@ limitations under the License.
             plotThresholds.push(this.overallThresholds[modelInd].threshold);
           }
           this.plotPr(
-            this.$$('#prchart'), plotStats,
+            this.shadowRoot.querySelector('#prchart'), plotStats,
             plotThresholds, regenInferenceStats);
         }
         this.updateCorrectness_();
@@ -3455,6 +3460,7 @@ limitations under the License.
         else if (selection == 'equalopp') {
           this.equalOppoClicked_();
         }
+        this.updateInferenceStats_(true);
       },
 
       costRatioChanged_: function() {
@@ -3464,7 +3470,7 @@ limitations under the License.
       },
 
       resetOptimizationSelected_: function() {
-        const button = this.$$('#customthresh');
+        const button = this.shadowRoot.querySelector('#customthresh');
         if (button != null) {
           button.click();
         }
@@ -3579,19 +3585,12 @@ limitations under the License.
 
           // Set all thresholds to the setting with the lowest cost from the
           // above search.
-          for (let vIdx = 0; vIdx < values.length; vIdx++) {
-            this.set('featureValueThresholdsMap.' + values[vIdx] +
-              '.threshold.' + modelInd + '.threshold',
-              bestThresholds[vIdx] / 100 );
-          }
-          // Polymer does not reflect changes if we only update through
-          // featureValueThresholdsMap, this is a quick workaround
-          // until we find the correct way to link
           for (let i = 0; i < this.featureValueThresholds.length; i++) {
-            const value =
-                this.featureValueThresholds[i].threshold[modelInd].threshold;
+            const sliceName = this.getPrintableValue_(
+              this.featureValueThresholds[i]);
+            const thresholdIndex = values.indexOf(sliceName);
             this.set('featureValueThresholds.' + i + '.threshold.' + modelInd +
-              '.threshold', value);
+              '.threshold', bestThresholds[thresholdIndex] / 100.0);
           }
         }
       },
@@ -4332,7 +4331,8 @@ limitations under the License.
         this.set('selectedExampleAndInference.changed', true);
         this.updateExample_(JSON.stringify(event.target.json), index);
         const inferenceViewerIdStr = '#' + this.getInferenceHolderId_();
-        const inferenceViewer = this.$$(inferenceViewerIdStr);
+        const inferenceViewer = this.shadowRoot.querySelector(
+          inferenceViewerIdStr);
         inferenceViewer.inference = null;
         this.visdata[index] =
           this.exampleToDataPoint_(event.target.json, index);
@@ -5207,7 +5207,8 @@ limitations under the License.
 
       /** Returns the feature container associated with the feature name. */
       featureContainerByName: function(featureName){
-        return this.$$('[data-feature-name="' + featureName + '"]');
+        return this.shadowRoot.querySelector(
+          '[data-feature-name="' + featureName + '"]');
       },
 
       /** Return the feature container associated with the specific event. */
@@ -5230,8 +5231,8 @@ limitations under the License.
         }
         // Open up the first PD plot pane after the category panes have loaded.
         setTimeout(() => {
-          if (this.$$('.pd-entry-container').hidden) {
-            this.$$('.tf-category-pane').click();
+          if (this.shadowRoot.querySelector('.pd-entry-container').hidden) {
+            this.shadowRoot.querySelector('.tf-category-pane').click();
           }
         }, 100);
       },
@@ -5362,7 +5363,7 @@ limitations under the License.
       },
 
       toggleExplorerSetup: function() {
-        this.$$('#collapseexplorer').toggle();
+        this.shadowRoot.querySelector('#collapseexplorer').toggle();
       },
 
       toggleContextTools: function() {
@@ -5374,7 +5375,7 @@ limitations under the License.
       },
 
       toggleInferenceResults: function() {
-        this.$$('#collapseinference').toggle();
+        this.shadowRoot.querySelector('#collapseinference').toggle();
       },
 
       getExpandCollapseIcon: function(opened) {

@@ -1,9 +1,15 @@
 package(default_visibility = ["//visibility:public"])
 
+load("@io_bazel_rules_closure//closure:defs.bzl", "closure_js_library")
 load("//tensorboard/defs:defs.bzl", "tensorboard_webcomponent_library")
 load("//tensorboard/defs:web.bzl", "tf_web_library")
 
 licenses(["notice"])  # Apache 2.0
+
+closure_js_library(
+    name = "externs",
+    srcs = ["externs.js"],
+)
 
 tf_web_library(
     name = "vz_chart_helpers",
@@ -17,6 +23,7 @@ tf_web_library(
     ],
     path = "/vz-chart-helpers",
     deps = [
+        ":externs",
         "//tensorboard/components/tf_imports:d3",
         "//tensorboard/components/tf_imports:lodash",
         "//tensorboard/components/tf_imports:plottable",

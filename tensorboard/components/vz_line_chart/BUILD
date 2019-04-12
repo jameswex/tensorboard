@@ -19,6 +19,8 @@ tf_web_library(
         "//tensorboard/components/tf_imports:lodash",
         "//tensorboard/components/tf_imports:plottable",
         "//tensorboard/components/tf_imports:polymer",
+        # HACK: plottable.css from :plottable is not accessible. Should investigate.
+        "//tensorboard/components/tf_imports:plottable_js_css",
         "//tensorboard/components/vz_chart_helpers",
     ],
 )

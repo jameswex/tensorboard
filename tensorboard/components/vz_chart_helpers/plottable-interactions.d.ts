@@ -12,6 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
-namespace vz_chart_helpers {
+namespace vz_chart_interactions {
   export class PointerInteraction extends Plottable.Interactions.Pointer {}
-}  // namespace vz_chart_helper
+}  // namespace vz_chart_interactions

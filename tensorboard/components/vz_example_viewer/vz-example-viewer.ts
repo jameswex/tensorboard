@@ -239,6 +239,9 @@ Polymer({
    */
   getFeaturesList: function(features: any, compareFeatures: any) {
     const featuresList: NameAndFeature[] = [];
+    if (features == null) {
+      return featuresList;
+    }
     const featureSet: {[key: string]: boolean} = {};
     let it = features.keys();
     if (it) {
@@ -249,6 +252,9 @@ Polymer({
         featureSet[next.value] = true;
         next = it.next();
       }
+    }
+    if (compareFeatures == null) {
+      return featuresList;
     }
     it = compareFeatures.keys();
     if (it) {
@@ -292,6 +298,9 @@ Polymer({
 
   getFilteredFeaturesList: function(featureList: NameAndFeature[],
       searchValue: string, saliency: SaliencyMap) {
+    if (featureList == null) {
+      return;
+    }
     let filtered = featureList;
     const checkSal = saliency && Object.keys(saliency).length > 0;
     // Create a dict of feature names to the total absolute saliency of all
@@ -1219,7 +1228,7 @@ Polymer({
    */
   setupOnloadCallback: function(feat: string, compare?: boolean) {
     requestAnimationFrame(() => {
-      const img = this.$$(
+      const img = this.shadowRoot.querySelector(
         '#' + this.getImageId(feat, compare)) as HTMLImageElement;
       img.onload = this.getOnLoadForImage(feat, img, compare);
     });
@@ -1419,9 +1428,10 @@ Polymer({
   },
 
   featureMoreClicked: function(event: Event) {
-    const button = event.srcElement.parentElement;
+    const button = event.srcElement;
     const feature = (button as any).dataFeature;
-    const dialog = this.$$('#' + this.sanitizeFeature(feature) + '_dialog');
+    const dialog = this.shadowRoot.querySelector(
+      '#' + this.sanitizeFeature(feature) + '_dialog');
     dialog.positionTarget = button;
     dialog.open();
   },
@@ -1563,7 +1573,7 @@ Polymer({
   getOnLoadForImage: function(feat: string, image: HTMLImageElement,
       compare?: boolean) {
     const f = (feat: string, image: HTMLImageElement, compare?: boolean) => {
-      const canvas = this.$$(
+      const canvas = this.shadowRoot.querySelector(
         '#' + this.getCanvasId(feat, compare)) as HTMLCanvasElement;
       if (!compare) {
         this.addDragDropBehaviorToCanvas(canvas);
@@ -1578,7 +1588,7 @@ Polymer({
         // If not using image controls then scale the image to match the
         // available width in the container, considering padding.
         if (!this.allowImageControls) {
-          const holder = this.$$(
+          const holder = this.shadowRoot.querySelector(
             '#' +
             this.getImageCardId(feat, compare)).parentElement as HTMLElement;
           let cardWidthForScaling = holder.getBoundingClientRect().width / 2;

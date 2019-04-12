@@ -212,7 +212,7 @@ limitations under the License.
       },
 
       _getCardActive(paneOpened, category, page) {
-        return Boolean(this._paneOpened[this._getCategoryKey(category)) && page.active;
+        return Boolean(this._paneOpened[this._getCategoryKey(category)]) && page.active;
       },
 
       _makeCategories(runToTag, selectedRuns, tagFilter, categoriesDomReady) {

@@ -22,8 +22,7 @@ tf_web_library(
 
 tensorboard_html_binary(
     name = "index",
-    # DO_NOT_SUBMIT
-    compile = False,
+    compile = True,
     input_path = "/tensorboard.html",
     output_path = "/index.html",
     deps = [":tensorboard"],

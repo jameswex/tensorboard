@@ -23,6 +23,7 @@ tf_web_library(
         "@org_polymer_iron_collapse",
         "@org_polymer_iron_icons",
         "@org_polymer_iron_pages",
+        "@org_polymer_neon_animation",
         "@org_polymer_paper_button",
         "@org_polymer_paper_dialog",
         "@org_polymer_paper_dropdown_menu",

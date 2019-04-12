@@ -397,6 +397,7 @@ Polymer({
           tooltip,
           this.tooltipColumns,
           this.fillArea,
+          this.getBoundingClientRect.bind(this),
           this.defaultXRange,
           this.defaultYRange,
           this.symbolFunction,
@@ -498,6 +499,7 @@ class LineChart {
   private tooltipPosition: string;
   private seriesWithoutTooltips?: string[];
   private _ignoreYOutliers: boolean;
+  private getBoundingClientRect: () => any;
 
   // An optional list of 2 numbers.
   private _defaultXRange: number[];
@@ -514,6 +516,7 @@ class LineChart {
       tooltip: d3.Selection<any, any, any, any>,
       tooltipColumns: vz_chart_helpers.TooltipColumn[],
       fillArea: FillArea,
+      getBoundingClientRect: () => any,
       defaultXRange?: number[],
       defaultYRange?: number[],
       symbolFunction?: vz_chart_helpers.SymbolFn,
@@ -544,6 +547,7 @@ class LineChart {
     this._defaultYRange = defaultYRange;
     this.tooltipColumns = tooltipColumns;
     this.seriesWithoutTooltips = seriesWithoutTooltips;
+    this.getBoundingClientRect = getBoundingClientRect;
 
     this.buildChart(
         xComponentsCreationMethod,
@@ -830,7 +834,7 @@ class LineChart {
 
   private createTooltipInteraction(dzl: DragZoomLayer):
       Plottable.Interactions.Pointer {
-    const pi = new Plottable.Interactions.Pointer();
+    const pi = new vz_chart_interactions.PointerInteraction();
     // Disable interaction while drag zooming.
     dzl.interactionStart(() => {
       pi.enabled(false);
@@ -981,7 +985,7 @@ class LineChart {
     // compute left position
     let documentWidth = document.body.clientWidth;
     let node: any = this.tooltip.node();
-    let parentRect = node.parentElement.getBoundingClientRect();
+    let parentRect = this.getBoundingClientRect();
     let nodeRect = node.getBoundingClientRect();
     // prevent it from falling off the right side of the screen
     let left = documentWidth - parentRect.left - nodeRect.width - 60, top = 0;

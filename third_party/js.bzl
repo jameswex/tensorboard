@@ -305,11 +305,10 @@ def tensorboard_js_workspace():
 
   http_archive(
       name = "ai_google_pair_facets",
-      sha256 = "e3f7b7b3c194c1772d16bdc8b348716c0da59a51daa03ef4503cf06c073caafc",
-      strip_prefix = "facets-0.2.1",
+      sha256 = "f112161a4472482ca8f87c8e730dbfdcafa45de42209134c9351dc1957f90259",
+      strip_prefix = "facets-e7350d1ac4a2fc19bb9c199b0694d1f2b727bf22",
       urls = [
-          "http://mirror.bazel.build/github.com/pair-code/facets/archive/0.2.1.tar.gz",
-          "https://github.com/pair-code/facets/archive/0.2.1.tar.gz",
+          "https://github.com/pair-code/facets/archive/e7350d1ac4a2fc19bb9c199b0694d1f2b727bf22.tar.gz",
       ],
   )
   web_library_external(
