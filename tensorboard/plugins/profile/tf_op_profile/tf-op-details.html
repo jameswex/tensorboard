@@ -22,14 +22,14 @@ You may obtain a copy of the License at
   tf-op-bar shows a small % utilization bar, colored using flameColor.
 -->
 <dom-module id="tf-op-bar">
-  <style>
-:host {
-  display: inline-block;
-  height: 1.5em;
-  line-height: 1.5em;
-}
-  </style>
   <template>
+    <style>
+      :host {
+        display: inline-block;
+        height: 1.5em;
+        line-height: 1.5em;
+      }
+    </style>
 &nbsp;[[_percent(value)]]
   </template>
   <script>
@@ -57,7 +57,8 @@ Polymer({
   tf-op-details is a card that describes an op or group of ops (the 'node').
 -->
 <dom-module id="tf-op-details">
-  <style>
+  <template>
+    <style>
 paper-card {
   --paper-card-header-color: white;
   width: 100%;
@@ -66,10 +67,13 @@ tf-op-bar {
   width: 100%;
 }
 #subheader {
-  padding: 0 16px 16px;
+  padding: 0 16px 6px;
   color: rgba(255, 255, 255, 0.7);
   position: relative;
   top: -10px;
+}
+.card-content {
+  background: #fff;
 }
 .card-content > div {
   margin-bottom: 1em;
@@ -107,8 +111,7 @@ tf-op-bar {
   width: 50%;
   box-sizing: border-box;
 }
-  </style>
-  <template>
+    </style>
     <paper-card id="card" heading="[[node.name]]" elevation="2">
       <div id="subheader">[[_subheader(node)]]</div>
       <div class="card-content">
@@ -168,7 +171,7 @@ Polymer({
   _updateCard: function(node) {
     if (!node) return;
     var color = tf_op_profile.flameColor(tf_op_profile.utilization(node), 0.7);
-    this.$.card.updateStyles({"--paper-card-header": "background-color:" + color});
+    this.$.card.updateStyles({"--paper-card-background-color": color});
     this.$.subheader.style.backgroundColor = color;
   },
   _subheader: function(node) {
