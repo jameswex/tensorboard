@@ -1,0 +1,86 @@
+<!--
+@license
+Copyright 2019 The TensorFlow Authors. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../tf-backend/tf-backend.html">
+<link rel="import" href="../tf-graph-common/tf-graph-common.html">
+
+<dom-module id="tf-debugger-graph-loader">
+  <script>
+    Polymer({
+      is: 'tf-debugger-graph-loader',
+      properties: {
+        runKey: String,
+        deviceName: String,
+        progress: {
+          type: Object,
+          value: () => ({}),
+          notify: true,
+        },
+        graphHierarchy: {
+          type: Object,
+          notify: true,
+          readOnly: true,
+        },
+        graph: {
+          type: Object,
+          notify: true,
+          readOnly: true,
+        },
+      },
+
+      observers: [
+        '_fetch(runKey, deviceName)',
+      ],
+
+      _fetch(runKey, deviceName) {
+        this.debounce('_fetch', () => {
+          this._fetchImpl(runKey, deviceName);
+        });
+      },
+
+      _fetchImpl(runKey, deviceName) {
+        if (deviceName == null) {
+          return;
+        }
+
+        this.set('progress', {
+          value: 0,
+          msg: ''
+        });
+
+        const params = new URLSearchParams({
+          run_key: runKey,
+          device_name: deviceName,
+        });
+        const url = tf_backend.getRouter().pluginRoute(
+            'debugger', '/debugger_graph', params);
+        const tracker = tf.graph.util.getTracker(this);
+
+        return tf.graph.loader.fetchAndConstructHierarchicalGraph(
+          tracker,
+          url,
+          null,
+        ).then(({graph, graphHierarchy}) => {
+          this._setGraph(graph);
+          this._setGraphHierarchy(graphHierarchy);
+        });
+      },
+  });
+
+  </script>
+</dom-module>

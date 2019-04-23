@@ -15,7 +15,7 @@ tf_web_library(
     deps = [
         "//tensorboard/plugins/graph/tf_graph_board",
         "//tensorboard/plugins/graph/tf_graph_controls",
-        "//tensorboard/plugins/graph/tf_graph_loader",
+        "//tensorboard/plugins/graph/tf_graph_common",
         "//tensorboard/components/tf_imports:polymer",
         "//tensorboard/components/tf_imports:webcomponentsjs",
         "@org_polymer_iron_component_page",
@@ -29,7 +29,7 @@ tensorboard_webcomponent_library(
     deps = [
         "//tensorboard/plugins/graph/tf_graph_board:legacy",
         "//tensorboard/plugins/graph/tf_graph_controls:legacy",
-        "//tensorboard/plugins/graph/tf_graph_loader:legacy",
+        "//tensorboard/plugins/graph/tf_graph_common:legacy",
         "//third_party/javascript/polymer/v1/iron-component-page:lib",
         "//third_party/javascript/polymer/v1/polymer:lib",
         "//third_party/javascript/polymer/v1/webcomponentsjs:lib",
