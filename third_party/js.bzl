@@ -317,7 +317,7 @@ def tensorboard_js_workspace():
 
   http_archive(
       name = "ai_google_pair_facets",
-      sha256 = "03010e520ba7f01c596e092805dc9331b13831cccb1926b9659cc2d01d1e1a22",
+      sha256 = "3da27ca65fb7047ea7d03f9ff29a54ec197ec1c68e6f77113b975334fabbb34c",
       strip_prefix = "facets-p2",
       urls = [
           "https://github.com/pair-code/facets/archive/p2.tar.gz",
