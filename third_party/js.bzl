@@ -317,11 +317,10 @@ def tensorboard_js_workspace():
 
   http_archive(
       name = "ai_google_pair_facets",
-      sha256 = "e3f7b7b3c194c1772d16bdc8b348716c0da59a51daa03ef4503cf06c073caafc",
-      strip_prefix = "facets-0.2.1",
+      sha256 = "03010e520ba7f01c596e092805dc9331b13831cccb1926b9659cc2d01d1e1a22",
+      strip_prefix = "facets-p2",
       urls = [
-          "http://mirror.bazel.build/github.com/pair-code/facets/archive/0.2.1.tar.gz",
-          "https://github.com/pair-code/facets/archive/0.2.1.tar.gz",
+          "https://github.com/pair-code/facets/archive/p2.tar.gz",
       ],
   )
   web_library_external(
@@ -340,7 +339,7 @@ def tensorboard_js_workspace():
       strip_prefix = "vaadin-split-layout-1.1.0",
       path = "/vaadin-split-layout",
   )
-  
+
   web_library_external(
       name = "vaadin_vaadin_grid",
       licenses = ["notice"],  # Apache License 2.0
