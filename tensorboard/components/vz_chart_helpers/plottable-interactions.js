@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
+var vz_chart_helpers;
 (function(vz_chart_helpers) {
   // HACK: parentElement does not work for webcomponents.
   function getHtmlElementAncestors(elem) {
@@ -140,4 +141,4 @@ limitations under the License.
 
   // export only PointerInteraction.
   vz_chart_helpers.PointerInteraction = PointerInteraction;
-})(window.vz_chart_helpers || (window.vz_chart_helpers = {}));
+})(vz_chart_helpers || (vz_chart_helpers = {}));
