@@ -184,6 +184,8 @@ class ServingBundle(object):
     estimator: An estimator to use instead of calling an external model.
     feature_spec: A feature spec for use with the estimator.
     custom_predict_fn: A custom prediction function.
+    convert_examples_fn: An optional function to convert a list of examples to
+      their proper format as needed by the custom_predict_fn.
 
   Raises:
     ValueError: If ServingBundle fails init validation.
@@ -192,7 +194,7 @@ class ServingBundle(object):
   def __init__(self, inference_address, model_name, model_type, model_version,
                signature, use_predict, predict_input_tensor,
                predict_output_tensor, estimator=None, feature_spec=None,
-               custom_predict_fn=None):
+               custom_predict_fn=None, convert_examples_fn=None):
     """Inits ServingBundle."""
     if not isinstance(inference_address, string_types):
       raise ValueError('Invalid inference_address has type: {}'.format(
@@ -220,6 +222,7 @@ class ServingBundle(object):
     self.estimator = estimator
     self.feature_spec = feature_spec
     self.custom_predict_fn = custom_predict_fn
+    self.convert_examples_fn = convert_examples_fn
 
 
 def proto_value_for_feature(example, feature_name):
@@ -758,8 +761,11 @@ def run_inference(examples, serving_bundle):
     return common_utils.convert_prediction_values(values, serving_bundle)
   elif serving_bundle.custom_predict_fn:
     # If custom_predict_fn is provided, pass examples directly for local
-    # inference.
-    values = serving_bundle.custom_predict_fn(examples)
+    # inference. If convert_examples_fn is provided, convert the examples before
+    # prediction.
+    examples_to_predict = (serving_bundle.convert_examples_fn(examples) if
+      serving_bundle.convert_examples_fn else examples)
+    values = serving_bundle.custom_predict_fn(examples_to_predict)
     return common_utils.convert_prediction_values(values, serving_bundle)
   else:
     return platform_utils.call_servo(examples, serving_bundle)

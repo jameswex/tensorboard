@@ -131,7 +131,9 @@ class WitWidgetBase(object):
       self.config.get('predict_output_tensor'),
       self.estimator_and_spec.get('estimator'),
       self.estimator_and_spec.get('feature_spec'),
-      self.custom_predict_fn)
+      self.custom_predict_fn,
+      (self._json_from_tf_examples
+        if self.config.get('uses_json_input') else None))
     infer_objs.append(inference_utils.run_inference_for_inference_results(
         examples_to_infer, serving_bundle))
     if ('inference_address_2' in self.config or
@@ -148,7 +150,9 @@ class WitWidgetBase(object):
         self.config.get('predict_output_tensor'),
         self.compare_estimator_and_spec.get('estimator'),
         self.compare_estimator_and_spec.get('feature_spec'),
-        self.compare_custom_predict_fn)
+        self.compare_custom_predict_fn,
+        (self._json_from_tf_examples
+          if self.config.get('uses_json_input') else None))
       infer_objs.append(inference_utils.run_inference_for_inference_results(
           examples_to_infer, serving_bundle))
     self.updated_example_indices = set()
@@ -176,7 +180,9 @@ class WitWidgetBase(object):
       self.config.get('predict_output_tensor'),
       self.estimator_and_spec.get('estimator'),
       self.estimator_and_spec.get('feature_spec'),
-      self.custom_predict_fn))
+      self.custom_predict_fn,
+      (self._json_from_tf_examples
+        if self.config.get('uses_json_input') else None)))
     if ('inference_address_2' in self.config or
         self.compare_estimator_and_spec.get('estimator') or
         self.compare_custom_predict_fn):
@@ -191,7 +197,9 @@ class WitWidgetBase(object):
         self.config.get('predict_output_tensor'),
         self.compare_estimator_and_spec.get('estimator'),
         self.compare_estimator_and_spec.get('feature_spec'),
-        self.compare_custom_predict_fn))
+        self.compare_custom_predict_fn,
+        (self._json_from_tf_examples
+          if self.config.get('uses_json_input') else None)))
     viz_params = inference_utils.VizParams(
       info['x_min'], info['x_max'],
       scan_examples, 10,
@@ -295,12 +303,17 @@ class WitWidgetBase(object):
       name += '/versions/{}'.format(version)
 
     # Properly package the examples to send for prediction.
-    if self.config.get('uses_json_input') or force_json:
-      examples_for_predict = self._json_from_tf_examples(examples)
+    if len(examples) > 0 and (
+      isinstance(examples[0], tf.train.Example) or
+      isinstance(examples[0], tf.train.SequenceExample)):
+      if force_json:
+        examples_for_predict = self._json_from_tf_examples(examples)
+      else:
+        examples_for_predict = [{'b64': base64.b64encode(
+          example.SerializeToString()).decode('utf-8') }
+          for example in examples]
     else:
-      examples_for_predict = [{'b64': base64.b64encode(
-        example.SerializeToString()).decode('utf-8') }
-        for example in examples]
+      examples_for_predict = examples
 
     # If there is a user-specified input example adjustment to make, make it.
     if adjust_example:
