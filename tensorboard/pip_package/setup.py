@@ -39,6 +39,7 @@ REQUIRED_PACKAGES = [
     # python3 specifically requires wheel 0.26
     'wheel; python_version < "3"',
     'wheel >= 0.26; python_version >= "3"',
+    'wit-tensorboard >= 0.1.0',
 ]
 
 CONSOLE_SCRIPTS = [
